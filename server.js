@@ -18,7 +18,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Connecting to the database -> url or onlineUrl
-mongoose.connect(config.url, { useNewUrlParser: true ,  useUnifiedTopology: true })
+mongoose.connect(config.onlineUrl, { useNewUrlParser: true ,  useUnifiedTopology: true })
 .then(() => {
   console.log('Succcessfully connected to MongoDB.');
   initial();
