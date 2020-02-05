@@ -2,6 +2,11 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+// const cors = require('cors');
+// app.use(cors());
+
+
+
 
 require('./app/router/router.js')(app);
 const Role = require('./app/model/role.model.js');
@@ -12,7 +17,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-// Connecting to the database
+// Connecting to the database -> url or onlineUrl
 mongoose.connect(config.url, { useNewUrlParser: true ,  useUnifiedTopology: true })
 .then(() => {
   console.log('Succcessfully connected to MongoDB.');
@@ -20,6 +25,11 @@ mongoose.connect(config.url, { useNewUrlParser: true ,  useUnifiedTopology: true
 }).catch(err => {
   console.log('Could not connect to MongoDB');
   process.exit();
+});
+
+// for heroku case
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'index.html '))
 });
 
 // Create a Server
