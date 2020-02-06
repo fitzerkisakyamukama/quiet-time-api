@@ -15,5 +15,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kisakyamukama Kabali Michael",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "13.x"
+  }
 }
