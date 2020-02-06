@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+const path =  require('path')
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const cors = require('cors');
@@ -29,7 +30,7 @@ mongoose.connect(config.onlineUrl, { useNewUrlParser: true ,  useUnifiedTopology
 
 // for heroku case
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html '))
+  res.sendFile(path.join(__dirname, 'index.html'))
 });
 
 // Create a Server
