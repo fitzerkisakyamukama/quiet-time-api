@@ -8,12 +8,12 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
   .exec((err, user) => {
    if(err && err.kind !== 'ObjectId') {
      res.status(500).send({
-       message: "Error retrieving user with username = " + req.body.username
+       error: "Error retrieving user with username = " + req.body.username
      });
      return;
    }
    if (user) {
-     res.status(400).send({ message: "Fail -> Username is already taken!"});
+     res.status(400).send({ error: "Username is already taken!"});
      return
    }
 
@@ -22,12 +22,12 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
    .exec((err, user) => {
      if (err && err.kind !== 'ObjectId') {
        res.status(500).send({
-         message: "Error retrieving user with Eanil = " + req.body.email
+         error: "Error retrieving user with Email = " + req.body.email
        });
        return;
      }
      if(user) {
-       res.status(400).send("Fail -> Enail is already in use");
+       res.status(400).send({ error: "Email is already in use"});
        return;
     }
    next();
@@ -37,7 +37,7 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
 checkRoleExisted = (req, res, next) => {
   for(let i=0; i<req.body.roles.length; i++) {
     if(!ROLEs.includes(req.body.roles[i].toUpperCase())){
-      res.status(400).send("Fail -> Does Not exisy Role = " + req.body.roles[i] );
+      res.status(400).send({ error: "No Role = " + req.body.roles[i] });
       return;
     }
   }

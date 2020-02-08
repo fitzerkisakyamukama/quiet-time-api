@@ -34,7 +34,7 @@ exports.signup = (req,res) => {
           if (err)
           res.status(500).send({reason: err.message });
 
-          res.status(200).send({ messaage: "User created successfully!"});
+          res.status(200).send({ message: "User created successfully!"});
         });
       });
     }).catch(err => {
