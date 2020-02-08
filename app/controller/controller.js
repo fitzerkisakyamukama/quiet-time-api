@@ -26,19 +26,19 @@ exports.signup = (req,res) => {
         'name': { $in: req.body.roles.map(role => role.toUpperCase()) }
       }, (err,roles) => {
         if(err)
-        res.status(500).send("Error -> "+ err );
+        res.status(500).send({ reason: err.message });
 
         // updare user with Roles
         savedUser.roles = roles.map(role => role._id);
         savedUser.save(function(err) {
           if (err)
-          res.status(500).send("Error -> " + err);
+          res.status(500).send({reason: err.message });
 
-          res.status(200).send("User created successfully!");
+          res.status(200).send({ messaage: "User created successfully!"});
         });
       });
     }).catch(err => {
-      res.status(500).send("Fail! Error -> " + err);
+      res.status(500).send({ reason: err.message  });
     });
   }
 
