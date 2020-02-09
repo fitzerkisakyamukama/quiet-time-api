@@ -24,7 +24,7 @@ exports.signup = (req,res) => {
     user.save().then(savedUser => {
       Role.find({
         'name': { $in: req.body.roles.map(role => role.toUpperCase()) }
-      }, (err,roles) => {
+      }, (err,roles) => {etRoles
         if(err)
         res.status(500).send({ reason: err.message });
 
@@ -60,17 +60,41 @@ exports.signin = (req, res) => {
       });
     }
 
-    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if(!passwordIsValid) {
-      return res.statud(401).send({ auth: false, accessToken: null, reason: 'Invalid Password!'});
+    if(!user){
+      return res.status(401).send({
+        // user does not exiist
+        auth: false, accessToken: null,
+        reason: "Invalid username or password"
+      });
+    }else{
+
+      var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+      if(!passwordIsValid) {
+        // wrong password
+        return res.status(401).send({ auth: false, accessToken: null, reason: 'Invalid username or password !'});
+      }
+
+      var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400 // expires in 24 hours
+      });
+
+      var authorities = [];
+      Role.find({
+        '_id':{ $in: user.roles}
+      }, (err, roles) => {
+        if(err)
+          res.status(500).send({ message: 'Unable to login user consult system admin'});
+        var authorities = [];
+        for(let i =0; i<roles.length; i++) {
+          // let role = roles[i].name.toUpperCase();
+          authorities.push('ROLE_' + roles[i].name.toUpperCase());
+
+        }
+        return res.status(200).send({auth: true, accessToken: token, username: user.username, authorities: authorities });
+
+      });
     }
-
-    var token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
-    });
-
-    res.status(200).send({ auth: true, accessToken: token });
-  });
+   });
 }
 
 exports.userContent = (req, res) => {
