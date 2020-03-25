@@ -14,4 +14,9 @@ module.exports = function(app) {
 
   app.get('/api/user/admin', [authJwt.verifyToken, authJwt.isAdmin], controller.adminBoard);
 
+  // devotion 
+  app.post('/api/devotion', [authJwt.verifyToken], controller.createDevotion);
+
+  app.get('/api/devotion', [authJwt.verifyToken], controller.getDevotions);
+
 }
